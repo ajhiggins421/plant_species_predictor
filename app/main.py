@@ -44,13 +44,15 @@ else:
 
 @app.route(f'{base_url}', methods=["GET", "POST"])
 def home():
-    output = get_prediction(request)
+    preds = get_prediction(request)
+    output = f"1.{preds[0]}, 2.{preds[1]}, 3.{preds[2]}"
     return render_template('index.html', output=output)
 
 
 @app.route(f'{base_url}/api', methods=["POST"])
 def api():
-    output = get_prediction(request)
+    preds = get_prediction(request)
+    output = {1: preds[0], 2: preds[1], 3: preds[2]}
     return jsonify(output)
 
 

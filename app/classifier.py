@@ -34,4 +34,4 @@ class Classifier:
                                 model.predict(np.array([image]), verbose=0)))
 
         predictions.sort(key=lambda x: x[1], reverse=True)
-        return predictions[0][0]
+        return [predictions[0][0], predictions[1][0], predictions[2][0]]
