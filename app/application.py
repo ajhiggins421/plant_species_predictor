@@ -40,8 +40,10 @@ base_url = get_base_url(port)
 
 if base_url == '/':
     app = Flask(__name__)
+    application = app
 else:
     app = Flask(__name__, static_url_path=base_url + 'static')
+    application = app
 
 
 @app.route(f'{base_url}', methods=["GET", "POST"])
