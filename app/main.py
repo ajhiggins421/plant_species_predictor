@@ -18,24 +18,28 @@ def get_base_url(current_port):
     return url
 
 
+def get_prediction(req):
+    try:
+        file = req.files['image']
+        filename = file.filename
+        file_path = "".join([config.TEMP_FOLDER, filename])
+        file.save(file_path)
+        prediction = image_predictor.get_prediction_for_image(file_path)
+        os.remove(file_path)
+        return prediction
+    except:
+        return "Error"
+
+
 port = 80  # or 443
 base_url = get_base_url(port)
 
-image_predictor = classifier.Classifier()  # Instance of classifier
+image_predictor = classifier.Classifier()
 
 if base_url == '/':
     app = Flask(__name__)
 else:
     app = Flask(__name__, static_url_path=base_url + 'static')
-
-
-def get_prediction(req):
-    if req.method == "POST":
-        file = req.files['image']
-        filename = file.filename
-        file_path = "".join([config.TEMP_FOLDER, filename])
-        file.save(file_path)  # saving file in temp folder
-        return image_predictor.get_prediction_for_image(file_path)
 
 
 @app.route(f'{base_url}', methods=["GET", "POST"])
@@ -51,6 +55,6 @@ def api():
 
 
 if __name__ == '__main__':
-    website_url = ''  # add
+    website_url = ''
     print(f'Try to open\n\n    https://{website_url}' + base_url + '\n\n')
     app.run(host='0.0.0.0', port=port, debug=True)
