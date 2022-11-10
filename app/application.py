@@ -26,9 +26,7 @@ def get_prediction(req):
         filename = file.filename
         file_path = "".join([config.TEMP_FOLDER, filename])
         file.save(file_path)
-        print(file_path)
         prediction = image_predictor.get_prediction_for_image(file_path)
-        print(prediction)
         os.remove(file_path)
         return prediction
     except:
@@ -48,16 +46,6 @@ else:
 
 @app.route(f'{base_url}', methods=["GET", "POST"])
 def home():
-    preds = get_prediction(request)
-    if preds != "Error":
-        output = f"1.{preds[0]}, 2.{preds[1]}, 3.{preds[2]}"
-    else:
-        output = "Error"
-    return render_template('index.html', output=output)
-
-
-@app.route(f'{base_url}/api', methods=["POST"])
-def api():
     preds = get_prediction(request)
     if preds != "Error":
         output = {1: preds[0], 2: preds[1], 3: preds[2]}
