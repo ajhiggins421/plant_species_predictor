@@ -18,7 +18,6 @@ class Classifier:
         model_list = []
         for j, weight in enumerate(self.model_string_names):
             self.model_name_to_index[weight[len(self.weight_locations):-8]] = j
-        # load each model
         for weight in self.model_string_names:
             model_list.append(keras.models.load_model(weight))
         return model_list
